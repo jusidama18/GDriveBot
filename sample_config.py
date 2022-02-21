@@ -1,4 +1,7 @@
 from os import environ
+from dotenv import load_dotenv
+
+load_dotenv('config.env', override=True)
 
 HEROKU = bool(
     environ.get('DYNO')

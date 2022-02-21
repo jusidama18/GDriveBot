@@ -19,3 +19,4 @@ lxml
 asyncio
 requests
 pybase64
+python-dotenv
