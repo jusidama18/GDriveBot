@@ -41,7 +41,7 @@ async def add_auth(chat_id: int) -> bool:
     auths = await auth_chat()
     auths.append(chat_id)
     await authdb.update_one(
-        {"sudo": "sudo"}, {"$set": {"authorize": auths}}, upsert=True
+        {"auth": "auth"}, {"$set": {"authorize": auths}}, upsert=True
     )
     return True
 
@@ -50,6 +50,6 @@ async def rmv_auth(user_id: int) -> bool:
     auths = await auth_chat()
     auths.remove(user_id)
     await authdb.update_one(
-        {"sudo": "sudo"}, {"$set": {"sudoers": auths}}, upsert=True
+        {"auth": "auth"}, {"$set": {"authorize": auths}}, upsert=True
     )
     return True

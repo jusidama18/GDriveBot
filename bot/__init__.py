@@ -30,18 +30,18 @@ ALLOWED_CHAT = SUDO_CHATS_ID
 
 async def load_auth():
     global ALLOWED_CHAT
-    sudoersdb = db.sudoers
-    sudoers = await sudoersdb.find_one({"sudo": "sudo"})
-    sudoers = [] if not sudoers else sudoers["sudoers"]
+    authdb = db.auths
+    auths = await authdb.find_one({"auth": "auth"})
+    auths = [] if not auths else auths["authorize"]
     for user_id in ALLOWED_CHAT:
-        if user_id not in sudoers:
-            sudoers.append(user_id)
-            await sudoersdb.update_one(
-                {"sudo": "sudo"},
-                {"$set": {"sudoers": sudoers}},
+        if user_id not in auths:
+            auths.append(user_id)
+            await authdb.update_one(
+                {"auth": "auth"},
+                {"$set": {"authorize": auths}},
                 upsert=True,
             )
-    ALLOWED_CHAT = (ALLOWED_CHAT + sudoers) if sudoers else ALLOWED_CHAT
+    ALLOWED_CHAT = (ALLOWED_CHAT + auths) if auths else ALLOWED_CHAT
     
 
 
