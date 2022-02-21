@@ -1,9 +1,10 @@
 from threading import Thread
 from urllib.parse import urlparse
 
-def is_supported(url: str) -> bool: 
+def is_supported(url: str): 
     link = urlparse(url).netloc
-    return any(i in link for i in ["drive.google.com", "new.gdtot", "appdrive", "driveapp"])
+    check = any(i in link for i in ["drive.google.com", "new.gdtot", "appdrive", "driveapp"])
+    return check, link
 
 def get_readable_time(seconds: int) -> str:
     count = 0
