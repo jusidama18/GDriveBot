@@ -1,4 +1,4 @@
-# GdriveSearcherBot
+# GDriveBot
 
 ## Credits
 [@SVR666](https://github.com/SVR666) For Drive module.
