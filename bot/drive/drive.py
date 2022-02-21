@@ -3,6 +3,7 @@ import re
 import pickle
 import json
 import logging
+from tkinter import Button
 
 from urllib.parse import urlparse, parse_qs
 from random import randrange
@@ -351,6 +352,7 @@ class GoogleDriveHelper:
                 msg += f'\n<b>Size: </b>{get_readable_file_size(self.total_bytes)}'
                 msg += '\n<b>Type: </b>Folder'
                 msg += f'\n<b>SubFolders: </b>{self.total_folders}'
+                link = self.__G_DRIVE_DIR_BASE_DOWNLOAD_URL.format(file_id)
             else:
                 msg += f'<b>Name: </b><code>{meta.get("name")}</code>'
                 if mime_type is None:
@@ -359,8 +361,11 @@ class GoogleDriveHelper:
                 self.gDrive_file(meta)
                 msg += f'\n<b>Size: </b>{get_readable_file_size(self.total_bytes)}'
                 msg += f'\n<b>Type: </b>{mime_type}'
+                link = self.__G_DRIVE_BASE_DOWNLOAD_URL.format(file_id)
             msg += f'\n<b>Files: </b>{self.total_files}'
+            button = ikb({"Drive Link": link})
         except Exception as err:
+            button = None
             if isinstance(err, RetryError):
                 LOGGER.info(f"Total attempts: {err.last_attempt.attempt_number}")
                 err = err.last_attempt.exception()
@@ -375,7 +380,7 @@ class GoogleDriveHelper:
             else:
                 msg = str(err)
             LOGGER.error(f"{msg}")
-        return msg
+        return msg, button
 
     def gDrive_file(self, filee):
         size = int(filee.get('size', 0))
@@ -420,7 +425,7 @@ class GoogleDriveHelper:
 
     def drive_list(self, fileName):
         data = []
-        for INDEX, parent_id in enumerate(DRIVE_ID, start=-1):
+        for _, parent_id in enumerate(DRIVE_ID, start=-1):
             response = self.drive_query(parent_id, fileName)
             for file in response:
                 if file['mimeType'] == "application/vnd.google-apps.folder":

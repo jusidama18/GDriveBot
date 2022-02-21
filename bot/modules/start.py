@@ -1,8 +1,8 @@
 from pyrogram import filters
 from bot.utils import capture_error, sendMessage, FSubs
-from bot import app, SUDO_CHATS_ID
+from bot import app, ALLOWED_CHAT
 
-@app.on_message(filters.command("start") & ~filters.edited & filters.chat(SUDO_CHATS_ID))
+@app.on_message(filters.command("start") & ~filters.edited & filters.chat(ALLOWED_CHAT))
 @capture_error
 async def start_command(_, message):
     await FSubs(message)

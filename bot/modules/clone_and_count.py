@@ -4,8 +4,9 @@ from bot.drive import GoogleDriveHelper
 from bot.utils import new_thread, capture_error, sendMessage, editMessage, gdtot, appdrive, is_supported
 from bot import app, LOGGER
 
+cmds = ['clone', 'count']
 
-@app.on_message(filters.command('clone'))
+@app.on_message(filters.command(cmds))
 @capture_error
 @new_thread
 async def clone(_, message):
@@ -37,9 +38,13 @@ async def clone(_, message):
     
     await editMessage(msg, f"**Cloning :** `{link}`")
     LOGGER.info(f"Cloning - {user_id} - : {link}")
+    target = str(message.command[0]).split("@")[0]
     try:
         gd = GoogleDriveHelper()
-        result, button = gd.clone(link)
+        if cmds[1] in target:
+            result, button = gd.count(link)
+        else:
+            result, button = gd.clone(link)
         if deletes:
             LOGGER.info(f"Deleting: {link}")
             gd.deleteFile(link)

@@ -9,7 +9,7 @@ if HEROKU:
     RESULTS_COUNT = int(environ.get('RESULTS_COUNT', 4))  # NOTE Number of results to show, 4 is better
     SUDO_CHATS_ID = list(str(environ.get('SUDO_CHATS_ID')).split(' '))
     CHANNEL = environ.get('CHANNEL', "@Jusidama")
-    MONGO_URL = environ.get('MONGO_URL')
+    MONGO_URL = environ.get('MONGO_URL', None)
     LOG_CHAT = int(environ.get('LOG_CHAT'))
     API_ID = environ.get('API_ID')
     API_HASH = environ.get('API_HASH')

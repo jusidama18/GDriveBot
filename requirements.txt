@@ -16,5 +16,6 @@ motor
 
 # Other Depedencies
 lxml
+asyncio
 requests
 pybase64

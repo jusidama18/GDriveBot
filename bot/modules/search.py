@@ -8,7 +8,7 @@ from bot.utils import (
     ikb, FSubs, capture_error, 
     get_readable_time, sendMessage, editMessage
 )
-from bot import app, RESULTS_COUNT, SUDO_CHATS_ID
+from bot import app, RESULTS_COUNT, ALLOWED_CHAT
 
 i = 0
 ii = 0
@@ -16,7 +16,7 @@ m = None
 keyboard = None
 data = None
 
-@app.on_message(filters.command("search") & ~filters.edited & filters.chat(SUDO_CHATS_ID))
+@app.on_message(filters.command("search") & ~filters.edited & filters.chat(ALLOWED_CHAT))
 @capture_error
 async def search(_, message):
     global i, m, data
