@@ -1,7 +1,10 @@
 from pyrogram import filters
 
 from bot.drive import GoogleDriveHelper
-from bot.utils import new_thread, capture_error, sendMessage, editMessage, gdtot, appdrive, is_supported
+from bot.utils import (
+        new_thread, capture_error, sendMessage, 
+        editMessage, gdtot, appdrive, is_supported, FSubs
+    )
 from bot import app, LOGGER
 
 cmds = ['clone', 'count']
@@ -10,6 +13,7 @@ cmds = ['clone', 'count']
 @capture_error
 @new_thread
 async def clone(_, message):
+    await FSubs(message)
     args = message.text.split(" ", maxsplit=1)
     link = args[1] if len(args) > 1 else ''
     user_id = message.from_user.id if message.from_user else message.sender_chat.id
