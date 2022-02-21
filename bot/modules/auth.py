@@ -1,8 +1,8 @@
 from pyrogram import filters
-from bot.utils import capture_error, add_auth, rmv_auth, auth_chat, Fsubs
+from bot.utils import capture_error, add_auth, rmv_auth, auth_chat, command
 from bot import app, OWNER_ID, LOGGER
 
-@app.on_message(filters.command(['auth', 'unauth', 'chat']) & ~filters.edited & filters.user(OWNER_ID))
+@app.on_message(command(['auth', 'unauth', 'chat'], sudo=True))
 @capture_error
 async def auth_chat(_, message):
     ALLOWED_CHAT = await auth_chat()

@@ -2,14 +2,14 @@ from pyrogram import filters
 
 from bot.drive import GoogleDriveHelper
 from bot.utils import (
-        new_thread, capture_error, sendMessage, 
+        new_thread, capture_error, sendMessage, command,
         editMessage, gdtot, appdrive, is_supported, FSubs
     )
 from bot import app, LOGGER
 
 cmds = ['clone', 'count']
 
-@app.on_message(filters.command(cmds))
+@app.on_message(command(cmds, allow_chat=True))
 @capture_error
 @new_thread
 async def clone(_, message):

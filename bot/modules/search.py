@@ -5,7 +5,7 @@ from pyrogram.errors.exceptions.bad_request_400 import MessageEmpty, MessageNotM
 
 from bot.drive import GoogleDriveHelper, drive
 from bot.utils import (
-    ikb, FSubs, capture_error, 
+    ikb, FSubs, capture_error, command,
     get_readable_time, sendMessage, editMessage
 )
 from bot import app, RESULTS_COUNT, ALLOWED_CHAT
@@ -16,7 +16,7 @@ m = None
 keyboard = None
 data = None
 
-@app.on_message(filters.command("search") & ~filters.edited & filters.chat(ALLOWED_CHAT))
+@app.on_message(command("search", allow_chat=True))
 @capture_error
 async def search(_, message):
     global i, m, data
