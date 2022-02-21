@@ -16,8 +16,8 @@ if HEROKU:
     APPDRIVE_EMAIL = environ.get('APPDRIVE_EMAIL')
     APPDRIVE_PASS = environ.get('APPDRIVE_PASS')
     GDTOT_CRYPT = environ.get('GDTOT_CRYPT')
-    IS_TEAM_DRIVE = bool(environ.get('IS_TEAM_DRIVE').lower() == 'true')
-    USE_SERVICE_ACCOUNTS = bool(environ.get('USE_SERVICE_ACCOUNTS').lower() == 'true')
+    IS_TEAM_DRIVE = bool(str(environ.get('IS_TEAM_DRIVE')).lower() == 'true')
+    USE_SERVICE_ACCOUNTS = bool(str(environ.get('USE_SERVICE_ACCOUNTS')).lower() == 'true')
     FOLDER_ID = environ.get('FOLDER_ID')
 else:
     BOT_TOKEN = "1629027959:AAEaTw4s2qaAL3mYP3fQRnE"
