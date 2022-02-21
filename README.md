@@ -9,3 +9,7 @@
 <br>
 [@Pokurt](https://github.com/pokurt) For Capture Errors and else.
 <br>
+[@Levi](https://github.com/l3v11) For Mongo idea
+<br>
+[@Yuuki](https://github.com/xcscxr) For GDtot and Appdrive
+<br>
