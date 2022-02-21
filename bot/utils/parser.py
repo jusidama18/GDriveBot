@@ -87,5 +87,4 @@ def gdtot(url: str) -> str:
         decoded_id = base64.b64decode(str(matches[0])).decode('utf-8')
     except:
         raise Exception("Unable to parse link")
-    gdrive_url = f'https://drive.google.com/open?id={decoded_id}'
-    return gdrive_url
+    return f'https://drive.google.com/open?id={decoded_id}'
