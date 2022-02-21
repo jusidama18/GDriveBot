@@ -14,4 +14,4 @@ RUN pip3 install --no-cache-dir -U -r requirements.txt
 COPY . .
 
 #Starting Bot
-CMD ["python3", "main.py"]
+CMD ["python3", "-m", "bot"]
