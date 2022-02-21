@@ -1,10 +1,11 @@
 from pyrogram import filters
-from bot.utils import capture_error, add_auth, rmv_auth, auth_chat
+from bot.utils import capture_error, add_auth, rmv_auth, auth_chat, Fsubs
 from bot import app
 
 @app.on_message(filters.command(['auth', 'unauth', 'chat']) & ~filters.edited)
 @capture_error
 async def auth_chat(_, message):
+    await Fsubs(message)
     ALLOWED_CHAT = await auth_chat()
     target = str(message.command[0]).split("@", maxsplit=1)[0]
     msg = await message.reply_text('`Processing....`', quote=True)
