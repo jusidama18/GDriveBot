@@ -20,3 +20,4 @@ asyncio
 requests
 pybase64
 python-dotenv
+urllib3
