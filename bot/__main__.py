@@ -6,11 +6,11 @@ from bot.modules import ALL_MODULES
 from bot.utils.database import clean_restart
 from bot import app, LOG_CHAT
 
-for module in ALL_MODULES:
-    imported_module = import_module(f'bot.modules.{module}')
-    reloads(imported_module)
-
 async def start_bot():
+    for module in ALL_MODULES:
+        imported_module = import_module(f'bot.modules.{module}')
+        reloads(imported_module)
+    
     data = await clean_restart()
     try:
         if data:

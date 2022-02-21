@@ -28,3 +28,28 @@ async def clean_restart() -> dict:
         "chat_id": data["chat_id"],
         "message_id": data["message_id"],
     }
+
+
+async def auth_chat() -> list:
+    auths = await authdb.find_one({"auth": "auth"})
+    if not auths:
+        return []
+    return auths["authorize"]
+
+
+async def add_auth(chat_id: int) -> bool:
+    auths = await auth_chat()
+    auths.append(chat_id)
+    await authdb.update_one(
+        {"sudo": "sudo"}, {"$set": {"authorize": auths}}, upsert=True
+    )
+    return True
+
+
+async def rmv_auth(user_id: int) -> bool:
+    auths = await auth_chat()
+    auths.remove(user_id)
+    await authdb.update_one(
+        {"sudo": "sudo"}, {"$set": {"sudoers": auths}}, upsert=True
+    )
+    return True
