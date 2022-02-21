@@ -9,8 +9,5 @@ from bot import app, LOGGER
 @new_thread
 async def clone(_, message):
     args = message.text.split(" ", maxsplit=1)
-    if len(args) > 1:
-        link = args[1]
-    else:
-        link = ''
+    link = args[1] if len(args) > 1 else ''
     

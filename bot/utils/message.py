@@ -35,7 +35,7 @@ async def FSubs(message: Message):
             return await sendMessage(message, "Sorry Sir, You are Banned to use me.")
     except UserNotParticipant:
         if MUST_JOIN.isalpha():
-            link = "https://t.me/" + MUST_JOIN
+            link = f'https://t.me/{MUST_JOIN}'
         else:
             link = (await app.get_chat(MUST_JOIN)).invite_link
         try:

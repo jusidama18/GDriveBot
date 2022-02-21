@@ -187,12 +187,16 @@ class GoogleDriveHelper:
             'parents': [dest_id]
         }
         try:
-            res = self.__service.files().copy(supportsAllDrives=True, fileId=file_id, body=body).execute()
-            return res
+            return (
+                self.__service.files()
+                .copy(supportsAllDrives=True, fileId=file_id, body=body)
+                .execute()
+            )
+
         except HttpError as err:
             if err.resp.get('content-type', '').startswith('application/json'):
                 reason = json.loads(err.content).get('error').get('errors')[0].get('reason')
-                if reason == 'userRateLimitExceeded' or reason == 'dailyLimitExceeded':
+                if reason in ['userRateLimitExceeded', 'dailyLimitExceeded']:
                     if USE_SERVICE_ACCOUNTS:
                         self.switchServiceAccount()
                         return self.copyFile(file_id, dest_id)
@@ -222,8 +226,7 @@ class GoogleDriveHelper:
                                                    pageSize=200,
                                                    fields='nextPageToken, files(id, name, mimeType, size)',
                                                    pageToken=page_token).execute()
-            for file in response.get('files', []):
-                files.append(file)
+            files.extend(iter(response.get('files', [])))
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
@@ -247,7 +250,7 @@ class GoogleDriveHelper:
                 result = self.cloneFolder(meta.get('name'), meta.get('name'), meta.get('id'), dir_id)
                 msg += f'<b>Filename: </b><code>{meta.get("name")}</code>'
                 msg += f'\n<b>Size: </b>{get_readable_file_size(self.transferred_size)}'
-                msg += f"\n<b>Type: </b>Folder"
+                msg += '\n<b>Type: </b>Folder'
                 msg += f"\n<b>SubFolders: </b>{self.total_folders}"
                 msg += f"\n<b>Files: </b>{self.total_files}"
                 link = self.__G_DRIVE_DIR_BASE_DOWNLOAD_URL.format(dir_id)
@@ -346,9 +349,8 @@ class GoogleDriveHelper:
                 self.gDrive_directory(meta)
                 msg += f'<b>Name: </b><code>{meta.get("name")}</code>'
                 msg += f'\n<b>Size: </b>{get_readable_file_size(self.total_bytes)}'
-                msg += f'\n<b>Type: </b>Folder'
+                msg += '\n<b>Type: </b>Folder'
                 msg += f'\n<b>SubFolders: </b>{self.total_folders}'
-                msg += f'\n<b>Files: </b>{self.total_files}'
             else:
                 msg += f'<b>Name: </b><code>{meta.get("name")}</code>'
                 if mime_type is None:
@@ -357,7 +359,7 @@ class GoogleDriveHelper:
                 self.gDrive_file(meta)
                 msg += f'\n<b>Size: </b>{get_readable_file_size(self.total_bytes)}'
                 msg += f'\n<b>Type: </b>{mime_type}'
-                msg += f'\n<b>Files: </b>{self.total_files}'
+            msg += f'\n<b>Files: </b>{self.total_files}'
         except Exception as err:
             if isinstance(err, RetryError):
                 LOGGER.info(f"Total attempts: {err.last_attempt.attempt_number}")
@@ -402,21 +404,24 @@ class GoogleDriveHelper:
         fileName = fileName.replace("'","\\'").replace('"','\\"')
         gquery = " and ".join([f"name contains '{x}'" for x in fileName.split()])
         query = f"'{parent_id}' in parents and ({gquery})"
-        response = self.__service.files().list(supportsTeamDrives=True,
-                                               includeTeamDriveItems=True,
-                                               q=query,
-                                               spaces='drive',
-                                               pageSize=200,
-                                               fields='files(id, name, mimeType, size)',
-                                               orderBy='modifiedTime desc').execute()["files"]
-        return response
+        return (
+            self.__service.files()
+            .list(
+                supportsTeamDrives=True,
+                includeTeamDriveItems=True,
+                q=query,
+                spaces='drive',
+                pageSize=200,
+                fields='files(id, name, mimeType, size)',
+                orderBy='modifiedTime desc',
+            )
+            .execute()["files"]
+        )
 
     def drive_list(self, fileName):
         data = []
-        INDEX = -1
-        for parent_id in DRIVE_ID:
+        for INDEX, parent_id in enumerate(DRIVE_ID, start=-1):
             response = self.drive_query(parent_id, fileName)
-            INDEX += 1
             for file in response:
                 if file['mimeType'] == "application/vnd.google-apps.folder":
                     data.append(

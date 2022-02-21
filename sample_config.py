@@ -7,7 +7,7 @@ HEROKU = bool(
 if HEROKU:
     BOT_TOKEN = environ.get('BOT_TOKEN')
     RESULTS_COUNT = int(environ.get('RESULTS_COUNT', 4))  # NOTE Number of results to show, 4 is better
-    SUDO_CHATS_ID = [i for i in str(environ.get('SUDO_CHATS_ID')).split(' ')]
+    SUDO_CHATS_ID = list(str(environ.get('SUDO_CHATS_ID')).split(' '))
     CHANNEL = environ.get('CHANNEL', "@Jusidama")
     MONGO_URL = environ.get('MONGO_URL')
     LOG_CHAT = int(environ.get('LOG_CHAT'))

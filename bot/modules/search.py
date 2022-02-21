@@ -29,10 +29,10 @@ async def search(_, message):
     m = await sendMessage(message, "**Searching....**")
     drive = GoogleDriveHelper()
     data = drive.drive_list(query)
-    
+
     results = len(data)
     i = 0
-    i = i + RESULTS_COUNT
+    i += RESULTS_COUNT
 
     if results == 0:
         await editMessage(message, "Found Literally Nothing.")
