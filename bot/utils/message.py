@@ -4,7 +4,7 @@ from pyrogram.types import Message
 from pyrogram.errors.exceptions.bad_request_400 import ChatAdminRequired, UserNotParticipant
 from pyrogram.errors import FloodWait, ChatWriteForbidden
 
-from bot.utils import ikb
+from bot.utils import ikb, is_authorize
 from bot import app, MUST_JOIN
 
 async def sendMessage(message: Message, text: str, button=None):
@@ -29,6 +29,7 @@ async def editMessage(message: Message, text, button=None):
         return editMessage(message, text, button)
 
 async def FSubs(message: Message):
+    await check_auth(message)
     try:
         user = await app.get_chat_member(MUST_JOIN, message.from_user.id)
         if user.status == "kicked":
@@ -46,3 +47,16 @@ async def FSubs(message: Message):
         return await sendMessage(message, f"I'm not admin in the MUST_JOIN chat : {MUST_JOIN} !")
     except Exception as e:
         return await sendMessage(message, f"**ERROR:** `{e}`")
+
+async def check_auth(message: Message):
+    reply = message.reply_to_message
+    if reply:
+        chat_id = reply.from_user.id if reply.from_user else reply.sender_chat.id
+    else:
+        chat_id = message.from_user.id if message.from_user else message.sender_chat.id
+
+    check = await is_authorize(chat_id)
+    if not check:
+        return await sendMessage(message, "You are not authorize to use this bot !")
+    else:
+        pass
