@@ -1,5 +1,3 @@
-from pyrogram import filters
-
 from bot.drive import GoogleDriveHelper
 from bot.utils import (
         new_thread, capture_error, sendMessage, command,

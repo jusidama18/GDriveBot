@@ -1,4 +1,3 @@
-from pyrogram import filters
 from bot.utils import capture_error, add_auth, rmv_auth, auth_chat, command
 from bot import app, OWNER_ID, LOGGER
 

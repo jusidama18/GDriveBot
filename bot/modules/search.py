@@ -1,6 +1,5 @@
 import time
 
-from pyrogram import filters
 from pyrogram.errors.exceptions.bad_request_400 import MessageEmpty, MessageNotModified
 
 from bot.drive import GoogleDriveHelper, drive

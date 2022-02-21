@@ -1,4 +1,3 @@
-from pyrogram import filters
 from bot.utils import capture_error, sendMessage, FSubs, command
 from bot import app
 
