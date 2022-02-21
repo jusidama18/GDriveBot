@@ -1,11 +1,10 @@
 from pyrogram import filters
 from bot.utils import capture_error, add_auth, rmv_auth, auth_chat, Fsubs
-from bot import app
+from bot import app, OWNER_ID, LOGGER
 
-@app.on_message(filters.command(['auth', 'unauth', 'chat']) & ~filters.edited)
+@app.on_message(filters.command(['auth', 'unauth', 'chat']) & ~filters.edited & filters.user(OWNER_ID))
 @capture_error
 async def auth_chat(_, message):
-    await Fsubs(message)
     ALLOWED_CHAT = await auth_chat()
     target = str(message.command[0]).split("@", maxsplit=1)[0]
     msg = await message.reply_text('`Processing....`', quote=True)
@@ -33,6 +32,7 @@ async def auth_chat(_, message):
         if ids in ALLOWED_CHAT:
             return await msg.edit('`This Chat ID Already In Allowed Chat !`')
         else:
+            LOGGER.info(f"Auth : {ids}")
             await add_auth(ids)
             return await msg.edit('`Success Add This Chat ID In Allowed Chat For Next 24 Hours !`')
     else:
@@ -40,4 +40,5 @@ async def auth_chat(_, message):
             return await msg.edit('`This Chat ID Not In Allowed Chat !`')
         else:
             await rmv_auth(ids)
+            LOGGER.info(f"Unauth : {ids}")
             return await msg.edit('`Success Remove This Chat ID From Allowed Chat !`')
