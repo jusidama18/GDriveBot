@@ -33,6 +33,9 @@ async def load_auth():
     authdb = db.auths
     auths = await authdb.find_one({"auth": "auth"})
     auths = [] if not auths else auths["authorize"]
+    if OWNER_ID not in auths:
+        auths.append(OWNER_ID)
+    
     for user_id in ALLOWED_CHAT:
         if user_id not in auths:
             auths.append(user_id)

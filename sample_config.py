@@ -11,7 +11,7 @@ if HEROKU:
     CHANNEL = environ.get('CHANNEL', "@Jusidama")
     MONGO_URL = environ.get('MONGO_URL', None)
     LOG_CHAT = int(environ.get('LOG_CHAT'))
-    API_ID = environ.get('API_ID')
+    API_ID = int(environ.get('API_ID'))
     API_HASH = environ.get('API_HASH')
     APPDRIVE_EMAIL = environ.get('APPDRIVE_EMAIL')
     APPDRIVE_PASS = environ.get('APPDRIVE_PASS')
@@ -19,6 +19,7 @@ if HEROKU:
     IS_TEAM_DRIVE = bool(str(environ.get('IS_TEAM_DRIVE')).lower() == 'true')
     USE_SERVICE_ACCOUNTS = bool(str(environ.get('USE_SERVICE_ACCOUNTS')).lower() == 'true')
     FOLDER_ID = environ.get('FOLDER_ID')
+    OWNER_ID = int(environ.get('OWNER_ID'))
 else:
     BOT_TOKEN = "1629027959:AAEaTw4s2qaAL3mYP3fQRnE"
     RESULTS_COUNT = 4  # NOTE Number of results to show, 4 is better
@@ -34,6 +35,7 @@ else:
     IS_TEAM_DRIVE = False
     FOLDER_ID = ""
     USE_SERVICE_ACCOUNTS = False
+    OWNER_ID = int(environ.get('OWNER_ID'))
 
 # Later in mongo
 
