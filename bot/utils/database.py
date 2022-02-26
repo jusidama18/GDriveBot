@@ -52,4 +52,8 @@ async def rmv_auth(user_id: int) -> bool:
     await authdb.update_one(
         {"auth": "auth"}, {"$set": {"authorize": auths}}, upsert=True
     )
-    return True
+    return 
+    
+# Todo list
+# DB for drive id (Search) dict(list(dict)) ?
+# DB for dest id, max 10 (Clone)
